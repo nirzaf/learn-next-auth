@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
 import { 
   BookOpen, 
   Code2, 
@@ -235,7 +235,6 @@ export default function Dashboard() {
                             {moduleProgress}%
                           </div>
                         </div>
-                        
                         <Progress value={moduleProgress} />
                         
                         {module.prerequisite && !isModuleUnlocked(module.id, module.prerequisite) && (

@@ -199,7 +199,7 @@ export default function Home() {
               </div>
             </CardHeader>
             <CardContent>
-              <Progress value={getTotalProgress()} className="mb-4" />
+              
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>{authMethods.filter(m => getModuleProgress(m.moduleId) === 100).length} of {authMethods.length} modules completed</span>
                 <Button variant="link" className="p-0 h-auto" asChild>

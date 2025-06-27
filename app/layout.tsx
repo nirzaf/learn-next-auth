@@ -6,6 +6,7 @@ import { AuthProvider } from '@/contexts/auth-context';
 import { ProgressProvider } from '@/contexts/progress-context';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('http://localhost:3000'),
   title: 'Next.js Authentication Learning Platform',
   description: 'Master authentication in Next.js through interactive examples, comprehensive tutorials, and hands-on practice',
   keywords: 'Next.js, authentication, JWT, OAuth, security, learning, tutorial',

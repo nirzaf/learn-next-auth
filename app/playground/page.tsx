@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,16 +26,26 @@ import { CodeBlock } from '@/components/code-block';
 import { useAuth } from '@/contexts/auth-context';
 import { useProgress } from '@/contexts/progress-context';
 
+// Use the PlaygroundProject type from progress context
+
+interface Template {
+  title: string;
+  description: string;
+  code: string;
+}
+
+type TemplateKey = 'jwt-login' | 'session-middleware' | 'oauth-setup' | 'protected-component';
+
 export default function Playground() {
   const { user } = useAuth();
   const { savePlaygroundCode, getSavedCode } = useProgress();
-  const [selectedTemplate, setSelectedTemplate] = useState('jwt-login');
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateKey>('jwt-login');
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
-  const [savedProjects, setSavedProjects] = useState([]);
+  const [savedProjects, setSavedProjects] = useState<any[]>([]);
 
-  const templates = {
+  const templates: Record<TemplateKey, Template> = {
     'jwt-login': {
       title: 'JWT Login API',
       description: 'Complete JWT authentication endpoint',
@@ -369,7 +380,7 @@ Performance optimizations: ✓`;
         
         setOutput(mockOutput);
       } catch (error) {
-        setOutput(`❌ Error: ${error.message}`);
+        setOutput(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
       setIsRunning(false);
     }, 2000);
@@ -383,9 +394,9 @@ Performance optimizations: ✓`;
     setSavedProjects(getSavedCode());
   };
 
-  const loadSavedProject = (project) => {
+  const loadSavedProject = (project: any) => {
     setCode(project.code);
-    setSelectedTemplate(project.template);
+    setSelectedTemplate(project.template as TemplateKey);
   };
 
   if (!user) {
@@ -424,7 +435,7 @@ Performance optimizations: ✓`;
                 <CardDescription>Choose a starting template</CardDescription>
               </CardHeader>
               <CardContent>
-                <Select value={selectedTemplate} onValueChange={setSelectedTemplate}>
+                <Select value={selectedTemplate} onValueChange={(value) => setSelectedTemplate(value as TemplateKey)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select template" />
                   </SelectTrigger>

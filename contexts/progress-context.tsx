@@ -107,7 +107,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     
     // Module completion achievements
     if (moduleProgress === 100) {
-      const moduleAchievements = {
+      const moduleAchievements: Record<string, { id: string; title: string; description: string; points: number }> = {
         'getting-started': {
           id: 'fundamentals-master',
           title: 'Fundamentals Master',
@@ -195,7 +195,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   const unlockAchievement = (achievementId: string) => {
     // This can be used for manual achievement unlocking
-    const predefinedAchievements = {
+    const predefinedAchievements: Record<string, { title: string; description: string; points: number }> = {
       'code-warrior': {
         title: 'Code Warrior',
         description: 'Saved 10 playground projects',

@@ -26,11 +26,25 @@ import { CodeBlock } from '@/components/code-block';
 import { useAuth } from '@/contexts/auth-context';
 import { useProgress } from '@/contexts/progress-context';
 
+interface VulnerabilityTestResult {
+  passed: number;
+  failed: number;
+  issues: string[];
+}
+
+type VulnerabilityTestType = 'csrf' | 'xss' | 'injection';
+
+interface VulnerabilityTest {
+  type: VulnerabilityTestType;
+  running: boolean;
+  results?: VulnerabilityTestResult;
+}
+
 export default function AdvancedSecurity() {
   const { user } = useAuth();
   const { updateModuleProgress } = useProgress();
   const [completedSections, setCompletedSections] = useState(new Set());
-  const [vulnerabilityTest, setVulnerabilityTest] = useState(null);
+  const [vulnerabilityTest, setVulnerabilityTest] = useState<VulnerabilityTest | null>(null);
 
   const securityTopics = [
     {
@@ -659,7 +673,7 @@ export function securityMonitoring(req, res, next) {
   next();
 }`;
 
-  const markSectionComplete = (sectionId) => {
+  const markSectionComplete = (sectionId: string) => {
     const newCompleted = new Set(completedSections);
     newCompleted.add(sectionId);
     setCompletedSections(newCompleted);
@@ -668,11 +682,11 @@ export function securityMonitoring(req, res, next) {
     updateModuleProgress('advanced-security', progress);
   };
 
-  const runVulnerabilityTest = (type) => {
+  const runVulnerabilityTest = (type: VulnerabilityTestType) => {
     setVulnerabilityTest({ type, running: true });
     
     setTimeout(() => {
-      const results = {
+      const results: Record<VulnerabilityTestType, VulnerabilityTestResult> = {
         csrf: {
           passed: 8,
           failed: 2,
@@ -1115,7 +1129,7 @@ export function securityMonitoring(req, res, next) {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {['csrf', 'xss', 'injection'].map((testType) => (
+              {(['csrf', 'xss', 'injection'] as const).map((testType) => (
                 <Card key={testType} className="p-4">
                   <div className="text-center">
                     <h4 className="font-semibold mb-2 capitalize">{testType} Test</h4>
